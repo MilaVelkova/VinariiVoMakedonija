@@ -1,2 +1,2 @@
-# VinariiVoMakedonija
-DIANS Proekt
+# Дафино Вино
+Винарии во Македонија
