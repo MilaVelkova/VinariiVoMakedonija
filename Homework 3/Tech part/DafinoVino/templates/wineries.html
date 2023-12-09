@@ -237,6 +237,9 @@
                                 <th><span>Rating</span></th>
                                 <th class="text-center"><span>Description</span></th>
                                 <th>More Details</th>
+                                {% if current_user.role.name == "ADMIN" %}
+                                    <th>Delete Winery</th>
+                                {% endif %}
                             </tr>
                             </thead>
                             <tbody>
@@ -247,7 +250,7 @@
                                     <td>
                                         <img src="{{ item.image_link }}" alt="{{ item.name }}"
                                              style="width: 300px !important;" width="300" height="100">
-                                        <a href="#" class="user-link">{{ item.name }}</a>
+                                        <a href="#" class="user-link">{{ item.id }}. {{ item.name }}</a>
                                     </td>
                                     <td>
                                         {{ item.rating }}★
@@ -264,6 +267,18 @@
                                         </span>
                                         </a>
                                     </td>
+
+                                    {% if current_user.role.name == "ADMIN" %}
+                                        <td style="width: 20%;">
+                                            <a href="{{ url_for('main.delete_winery', item_id=item.id) }}"
+                                               class="table-link">
+                                               <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-remove fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                    {% endif %}
                                 </tr>
                             {% endfor %}
 
@@ -278,6 +293,11 @@
                style="font-size: 20px !important; margin: 4px;">Previous page</a>
             <a class="btn btn-info" href="{{ url_for('main.wineries', page=(page + 10)) }}"
                style="font-size: 20px !important; float: right; margin: 4px;">Next page</a>
+            {% if current_user.role.name == "ADMIN" %}
+                <span class="d-flex align-items-center justify-content-center">
+                    <a href="{{ url_for('main.add_winery') }}" class="btn btn-success">Add new Winery</a>
+                </span>
+            {% endif %}
         </footer>
     </div>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -286,5 +306,8 @@
 
 {% endif %}
 </script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
