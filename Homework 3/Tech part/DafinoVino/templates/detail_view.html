@@ -118,9 +118,8 @@
                                             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                         }).addTo(mymap);
 
-                                        // Add the user's marker
+
                                         var wineryMarker = L.marker([wineryLatitude, wineryLongitude]).addTo(mymap);
-                                        wineryMarker.bindPopup("<b>{{ data.name }}</b>").openPopup();
 
                                         var userLongitude = location[0];
                                         var userLatitude = location[1];
@@ -129,14 +128,19 @@
                                         var userMarker = L.marker([userLatitude, userLongitude]).addTo(mymap);
                                         userMarker.bindPopup("<b>Your Location</b>");
 
+                                        var wineryWaypoint = L.latLng(wineryLatitude, wineryLongitude);
+                                        var userWaypoint = L.latLng(userLatitude, userLongitude);
                                         // Add the routing control
                                         L.Routing.control({
                                             waypoints: [
-                                                L.latLng(wineryLatitude, wineryLongitude),
-                                                L.latLng(userLatitude, userLongitude)
+                                                wineryWaypoint,
+                                                userWaypoint
                                             ],
                                             routeWhileDragging: true
                                         }).addTo(mymap);
+
+                                        userMarker.bindPopup("<b>Your Location</b>");
+                                        wineryMarker.bindPopup("<b>{{ data.name }}</b>").openPopup();
                                     });
                                 </script>
                             </div>
