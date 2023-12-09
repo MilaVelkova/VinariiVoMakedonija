@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
-from .models import User
+from .models import User, UserRole
 
 auth = Blueprint('auth', __name__)
 
@@ -65,4 +65,31 @@ def signup_post():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('main.wineries'))
+    return redirect(url_for('main.main_page'))
+
+
+@auth.route('/users')
+@login_required
+def users():
+    all_users = User.query.all()
+    return render_template("allusers.html", all_users=all_users)
+
+
+@auth.route('/change_user_role/<int:user_id>')
+@login_required
+def change_user_role(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    return render_template("user-detail.html", given_id=user.id, user=user)
+
+
+@auth.route('/change_user_role/<int:user_id>', methods=['POST'])
+def process_edit_user(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    selected_role = request.form.get('selected_role')
+    print(selected_role)
+    if selected_role == "ADMIN":
+        user.role = UserRole.ADMIN
+    elif selected_role == "USER":
+        user.role = UserRole.USER
+    db.session.commit()
+    return redirect(url_for('auth.users'))

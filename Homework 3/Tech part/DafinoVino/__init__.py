@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
+
 
 def create_app():
     app = Flask(__name__)
@@ -35,5 +37,15 @@ def create_app():
     with app.app_context():
         db.create_all()
         db.session.commit()
+
+    # region intialize one Admin
+    # from .models import UserRole
+    # new_admin = User(email="Admin@Admin", name="Admin", password=generate_password_hash("Admin"), role=UserRole.ADMIN)
+    #
+    # # add the new user to the database
+    # with app.app_context():
+    #     db.session.add(new_admin)
+    #     db.session.commit()
+    # endregion
 
     return app
