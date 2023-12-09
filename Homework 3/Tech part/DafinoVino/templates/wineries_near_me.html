@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 
 
-    <title>All Wineries</title>
+    <title>Wineries near me</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
@@ -223,7 +223,7 @@
 <body>
 {% include 'navbar.html' %}
 {% if current_user.is_authenticated %}
-    <h1 style="text-align: center;">All Wineries</h1>
+    <h1 style="text-align: center;">Wineries near me</h1>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <div class="container">
         <div class="row">
@@ -242,7 +242,7 @@
                             <tbody>
 
 
-                            {% for item in data[:10] %}
+                            {% for item in data %}
                                 <tr>
                                     <td>
                                         <img src="{{ item.image_link }}" alt="{{ item.name }}"
@@ -273,12 +273,6 @@
                 </div>
             </div>
         </div>
-        <footer>
-            <a class="btn btn-info" href="{{ url_for('main.wineries', page=(page-10)) }}"
-               style="font-size: 20px !important; margin: 4px;">Previous page</a>
-            <a class="btn btn-info" href="{{ url_for('main.wineries', page=(page + 10)) }}"
-               style="font-size: 20px !important; float: right; margin: 4px;">Next page</a>
-        </footer>
     </div>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>

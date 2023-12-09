@@ -60,10 +60,18 @@
                                 </button>
                                 <div class="collapse navbar-collapse" id="navbarsExample04">
                                     <ul class="navbar-nav mr-auto">
-                                        <li class="nav-item">
-                                            <a class="nav-link" style="color:black !important;"
-                                               href="{{ url_for('main.wineries') }}">Wineries</a>
-                                        </li>
+                                        {% if current_user.is_authenticated %}
+                                            <li class="nav-item">
+                                                <a class="nav-link" style="color:black !important;"
+                                                   href="{{ url_for('main.wineries') }}">Wineries</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if current_user.is_authenticated %}
+                                            <li class="nav-item">
+                                                <a class="nav-link" style="color:black !important;"
+                                                   href="{{ url_for('main.location') }}">Wineries Near Me</a>
+                                            </li>
+                                        {% endif %}
                                         <li class="nav-item">
                                             <a class="nav-link" style="color:black !important;"
                                                href="{{ url_for('main.main_page') }}">Main Page</a>
@@ -86,12 +94,19 @@
                                                    href="{{ url_for('auth.signup') }}">Sign Up</a>
                                             </li>
                                         {% endif %}
+                                        {% if current_user.is_authenticated and current_user.role.name=="ADMIN" %}
+                                            <li class="nav-item">
+                                                <a class="nav-link" style="color:black !important;"
+                                                   href="{{ url_for('auth.users') }}">Users</a>
+                                            </li>
+                                        {% endif %}
                                         {% if current_user.is_authenticated %}
                                             <li class="nav-item">
                                                 <a class="nav-link" style="color:black !important;"
                                                    href="{{ url_for('auth.logout') }}">Logout</a>
                                             </li>
                                         {% endif %}
+
                                     </ul>
                                 </div>
                             </nav>
@@ -101,6 +116,8 @@
             </div>
             <!-- end header inner -->
             <!-- end header -->
+
+
 
         </div>
     </header>

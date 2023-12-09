@@ -105,3 +105,53 @@ def saveChanges():
     flask_login.current_user.name = new_name
     db.session.commit()
     return redirect(url_for('main.profile'))
+
+
+@main.route("/location")
+@login_required
+def location():
+    return render_template("allow_location.html")
+
+
+from math import radians, sin, cos, sqrt, atan2
+
+
+def haversine(lat1, lon1, lat2, lon2):
+    # Radius of the Earth in kilometers
+    R = 6371.0
+
+    # Convert latitude and longitude from degrees to radians
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+
+    # Calculate the differences between latitudes and longitudes
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+
+    # Haversine formula
+    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    # Calculate the distance
+    distance = R * c
+
+    return distance
+
+
+@main.route("/near_me", methods=['POST'])
+@login_required
+def near_me():
+    latitude = request.form.get('latitude')
+    longitude = request.form.get('longitude')
+
+    print(f"Received location: Latitude={latitude}, Longitude={longitude}")
+
+    nearby_wineries = [winery for winery in wineries_list if
+                        haversine(float(latitude),
+                                  float(longitude),
+                                  float(winery.location.split(" ")[0]),
+                                  float(winery.location.split(" ")[1])) <= 50]
+
+    [print(loc) for loc in nearby_wineries]
+    print(len(nearby_wineries))
+
+    return render_template("wineries_near_me.html", longitude=longitude, latitude=latitude, data=nearby_wineries)
