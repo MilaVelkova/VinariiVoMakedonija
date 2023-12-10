@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from . import db
-from .models import User, UserRole
+from __init__ import db
+from models import User, UserRole
 
 auth = Blueprint('auth', __name__)
 
@@ -84,7 +84,6 @@ def change_user_role(user_id):
         user = User.query.filter_by(id=user_id).first()
         return render_template("user-detail.html", given_id=user.id, user=user)
     return redirect(url_for('main.wineries'))
-
 
 
 @auth.route('/change_user_role/<int:user_id>', methods=['POST'])

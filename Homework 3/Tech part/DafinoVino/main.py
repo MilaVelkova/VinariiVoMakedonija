@@ -7,7 +7,7 @@ from flask import redirect
 from flask import render_template, request, Blueprint, flash, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
-from . import db
+from __init__ import db
 
 
 class Winery:
@@ -90,6 +90,7 @@ def wineries():
 @login_required
 def profile():
     return render_template('profile.html', name=current_user.name, current_user=current_user)
+
 
 @main.route('/saveChanges', methods=['POST'])
 @login_required
