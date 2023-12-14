@@ -6,8 +6,14 @@
 2. ```pip install Flask```
 3. ```git clone https://github.com/Polclard/VinariiVoMakedonija.git```
 4.  Navigate to the `VinariiVoMakedonija\Homework 3\Tech part\DafinoVino`
-5. Run ``` python -m flask --app __init__ run```
-6. Open `http://127.0.0.1:5000/` on your favorite browser
+5.  Initialize one admin in ```__init__.py``` file in the region Initialize One Admin, to view admin options, or simply use:
+
+   ```Username: Admin@Admin```
+   ```Password: Admin```
+   
+7. For normal user just sign up with new E-mail, Name and Password.
+8. Run ```python app.py```
+9. Open `http://127.0.0.1:5000/` on your favorite browser
 
 ## Made by:
 1. Alen Jangelov
