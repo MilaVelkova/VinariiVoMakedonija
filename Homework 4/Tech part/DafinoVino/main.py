@@ -1,54 +1,11 @@
 import csv
-import json
-
 import flask_login
-import pandas as pd
 from flask import redirect
 from flask import render_template, request, Blueprint, flash, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from __init__ import db
-
-class Winery:
-    def __init__(self, id, name, description, image_link, rating, location):
-        self.id = id
-        self.name = name
-        self.description = description
-        self.image_link = image_link
-        self.rating = rating
-        self.location = location
-
-
-def instantiate_wineries():
-    file = pd.read_csv("static/csv/final_scraped_wineries.csv", encoding='latin1')
-    parsed_json = file.to_json(orient='records')
-    parsed_json = json.loads(parsed_json)
-    # print(parsed_json)
-    new_list = list()
-    i = 0
-    for item in parsed_json:
-        new_list.append(Winery(i,
-                               item['Winary Name'],
-                               item['Winary Description'],
-                               item['Winary Image Link'],
-                               item['Winary Rating'],
-                               item['Winary Location']))
-        i += 1
-    return new_list
-
-
-def find_winery_by_id(list_to_search, id):
-    list_found = [item for item in list_to_search if item.id == id]
-    return list_found[0]
-
-
-def winery_repository():
-    return instantiate_wineries()
-
-
-def find_winery_by_id_ser(list_to_search, id):
-    return find_winery_by_id(list_to_search, id)
-
+from Help.helperMethods import *
 
 main = Blueprint('main', __name__)
 
@@ -114,30 +71,6 @@ def saveChanges():
 @login_required
 def location():
     return render_template("allow_location.html")
-
-
-from math import radians, sin, cos, sqrt, atan2
-
-
-def haversine(lat1, lon1, lat2, lon2):
-    # Radius of the Earth in kilometers
-    R = 6371.0
-
-    # Convert latitude and longitude from degrees to radians
-    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
-
-    # Calculate the differences between latitudes and longitudes
-    dlat = lat2 - lat1
-    dlon = lon2 - lon1
-
-    # Haversine formula
-    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
-    c = 2 * atan2(sqrt(a), sqrt(1 - a))
-
-    # Calculate the distance
-    distance = R * c
-
-    return distance
 
 
 @main.route("/near_me", methods=['POST'])
@@ -226,11 +159,7 @@ def delete_winery(item_id):
     return redirect(url_for('main.wineries'))
 
 
-@login_required
 @main.route('/wineries/json/api')
-def show_wineries_json_api():
-    #Exposing APIS
-    file = pd.read_csv("static/csv/final_scraped_wineries.csv", encoding='latin1')
-    parsed_json = file.to_json(orient='records')
-    parsed_json = json.loads(parsed_json)
-    return parsed_json
+@login_required
+def show_wineries_as_json_api():
+    return return_json_wineries()
